@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    {{- include "magma-oai-mme.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "magma-oai-mme.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "magma-oai-mme.selectorLabels" . | nindent 8 }}
+      annotations:
+        k8s.v1.cni.cncf.io/networks: {{ .Chart.Name }}-{{ .Values.namespace }}-net1, {{ .Chart.Name }}-{{ .Values.namespace }}-net2
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+      - name: mme
+        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        ports:
+        - containerPort: {{ .Values.service.diameterPort }}
+          name: magma-oai-mme
+        - containerPort: {{ .Values.service.diameterSecPort }}
+          name: oai-mme-sec
+        - containerPort: {{ .Values.service.gtpcPort }}
+          name: s11
+        env:
+          - name: PREFIX
+            value: {{ .Values.mmeConf.prefix }}
+          - name: MME_FQDN
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Chart.Name }}-{{ .Values.namespace }}-configmap
+                key: mmeService
+        {{- with .Values.volumeMounts }}
+        volumeMounts: {{ toYaml . | nindent 10 }}
+        {{- end }}  
+        command:
+          - /bin/sleep
+          - infinity
+      - name: sctpd
+        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
+        command:
+          - /bin/sleep
+          - infinity
+      - name: misc
+        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
+        command:
+          - /bin/sleep
+          - infinity
+      - name: tcpdump
+        image: corfr/tcpdump
+        command:
+          - /bin/sleep
+          - infinity
+      {{- with .Values.volumes }}
+      volumes: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      terminationGracePeriodSeconds: 30
+      nodeName: perse.5glab.nsa.eurecom.fr
+
