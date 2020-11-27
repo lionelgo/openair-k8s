@@ -4,12 +4,12 @@
 
 replicaCount: 1
 
-namespace: "oai"
+namespace: "oai-cn"
 
 image:
   registry: local
-  repository: image-registry.openshift-image-registry.svc:5000/oai/oai-spgwc
-  version: onap-0.1.0
+  repository: image-registry.openshift-image-registry.svc:5000/oai-cn/oai-spgwc
+  version: magma-mme
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: Always
 
@@ -54,8 +54,14 @@ lte:
   ueIpAddressPool: "192.168.20.2-192.168.20.200"
   ueDnsServer: "192.168.18.129"
   ueDnsServerSec: "192.168.18.129"
-  apn: "apn.oai.svc.cluster.local"
-
+  apn: "apn.oai-cn.svc.cluster.local"
+  sgwIpS11: "172.16.1.165"
+  sgwNetmaskS11: "24"
+  sgwGatewayS11: "172.16.1.1"
+  sgwIpSx: "192.168.2.164"
+  sgwNetmaskSx: "24"
+  sgwGatewaySx: "192.168.2.1"
+  
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

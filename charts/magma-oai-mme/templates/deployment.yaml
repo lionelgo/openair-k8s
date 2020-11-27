@@ -25,6 +25,11 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       containers:
+      - name: redis
+        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
+        command:
+          - /usr/bin/redis-server
+          - /usr/local/etc/redis/redis.conf
       - name: mme
         image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -48,16 +53,17 @@ spec:
         {{- with .Values.volumeMounts }}
         volumeMounts: {{ toYaml . | nindent 10 }}
         {{- end }}  
+        {{- with .Values.sctpVolumeMounts }}
+        volumeMounts: {{ toYaml . | nindent 10 }}
+        {{- end }}  
         command:
           - /bin/sleep
           - infinity
       - name: sctpd
         image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
-        command:
-          - /bin/sleep
-          - infinity
-      - name: misc
-        image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
+        {{- with .Values.sctpVolumeMounts }}
+        volumeMounts: {{ toYaml . | nindent 10 }}
+        {{- end }}  
         command:
           - /bin/sleep
           - infinity
