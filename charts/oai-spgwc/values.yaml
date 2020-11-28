@@ -54,25 +54,29 @@ lte:
   ueIpAddressPool: "192.168.20.2-192.168.20.200"
   ueDnsServer: "192.168.18.129"
   ueDnsServerSec: "192.168.18.129"
-  apn: "apn.oai-cn.svc.cluster.local"
+  apn: "oai.ipv4"
   sgwIpS11: "172.16.1.165"
   sgwNetmaskS11: "24"
   sgwGatewayS11: "172.16.1.1"
   sgwIpSx: "192.168.2.164"
   sgwNetmaskSx: "24"
   sgwGatewaySx: "192.168.2.1"
-  
-resources: {}
+
+persistence:
+  #make it true for the first time when you want to create persistance volume and then false
+  enabled: false
+
+resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
 
 nodeSelector: {}
 
