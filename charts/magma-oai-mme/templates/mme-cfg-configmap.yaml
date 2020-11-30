@@ -1,6 +1,7 @@
-kind: ConfigMap  
-apiVersion: v1  
-metadata:  
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
   name: mme-cfg-configmap
 data:
   mme.conf: |

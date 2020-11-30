@@ -42,6 +42,11 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+persistence:
+  # make it true for the first time when you want to create persistance volume
+  # and then false
+  enabled: false
+
 service:
   type: ClusterIP
   diameterPort: 3870
@@ -86,45 +91,19 @@ mmeConf:
   s11IfaceName: "net2"
   remoteSgwIp: "172.16.1.106"
   taiList: |
-      ({ MCC="320";MNC="230";TAC="1";},{ MCC="320";MNC="230";TAC="5556";},{ MCC="320";MNC="230";TAC="1235";});
+     ({ MCC="320";MNC="230";TAC="1";},{ MCC="320";MNC="230";TAC="5556";},{ MCC="320";MNC="230";TAC="1235";});
   hssIp: "192.168.18.176"
 
-volumes:
-  - configMap:
-      name: mme-fd-configmap
-    name: fd-vol
-  - configMap:
-      name: mme-cfg-configmap
-    name: cfg-vol
-  - name: shared-data
-    emptyDir: {}
-    
-volumeMounts:
-  - mountPath: /magma/etc/mme_fd.conf
-    name: fd-vol
-    subPath: mme_fd.conf
-  - mountPath: /magma/etc/mme.conf
-    name: cfg-vol
-    subPath: mme.conf
-    
-sctpVolumeMounts:
-  - name: shared-data
-    mountPath: /tmp/sctpd
-    
 resources:
   # We usually recommend not to specify default resources and to leave this as a
   # conscious choice for the user. This also increases chances charts run on
   # environments with little resources, such as Minikube. If you do want to
   # specify resources, uncomment the following lines, adjust them as necessary,
-  # and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  # and remove the curly braces after 'resources:'
+  limits:
+    cpu: 4
   requests:
-    cpu: 200m
+    cpu: 2000m
     memory: 256Mi
 
 nodeSelector: {}
