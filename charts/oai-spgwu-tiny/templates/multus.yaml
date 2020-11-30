@@ -37,7 +37,11 @@ spec:
                         "address": {{- cat .Values.lte.sgwIpS1u "/" .Values.lte.sgwNetmaskS1u | nospace | quote }},
                         "gateway": {{ .Values.lte.sgwGatewayS1u | quote }}
                 }
-        ]     
+        ],
+        "routes": [
+          { "dst": "192.168.20.0/24" }
+        ],
+        "gateway": "192.168.18.96"        
       }
     }'
 ---

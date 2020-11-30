@@ -76,12 +76,23 @@ spec:
               configMapKeyRef:
                 name: {{ .Chart.Name }}-configmap
                 key: pgwuSgiGw
+        #volumeMounts:
+        #- mountPath: /dev/hugepages
+        #  name: hugepage
+        {{- with .Values.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        command:
+          - /bin/sleep
+          - infinity
       - name: tcpdump
         image: corfr/tcpdump
         command:
           -  /bin/sh
           -  -c
-          -  /usr/sbin/tcpdump -i any port 2152 or port 8805 or arp or icmp or udp -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+          -  /usr/sbin/tcpdump -i any -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+          # -  /usr/sbin/tcpdump -i any port 2152 or port 8805 or port 5001 or arp or icmp -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
         volumeMounts:
         - mountPath: "/pcap"
           name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
@@ -89,11 +100,14 @@ spec:
         - name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}-{{ .Values.namespace }}-pvc   
+        # - name: hugepage
+        #   emptyDir:
+        #    medium: HugePages            
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       serviceAccountName: {{ .Values.serviceAccount.name }}
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 15
       # Real-Time worker node
       nodeName: dedale.5glab.nsa.eurecom.fr
       

@@ -9,7 +9,9 @@ namespace: "oai-cn"
 image:
   registry: local
   repository: image-registry.openshift-image-registry.svc:5000/oai-cn/oai-spgwu-tiny
-  version: magma-mme
+  #version: odp
+  #version: magma-mme
+  version: all-build-types
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: Always
 
@@ -61,7 +63,7 @@ lte:
   sgwGatewaySx: "192.168.2.1"
   sgwIpS1u: "192.168.18.165"
   sgwNetmaskS1u: "24"
-  sgwGatewayS1u: "192.168.18.96"
+  sgwGatewayS1u: "192.168.18.1"
   
 persistence:
   #make it true for the first time when you want to create persistance volume and then false
@@ -73,11 +75,10 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 4000m
-    memory: 1024Mi
+    cpu: 4
   requests:
-    cpu: 2500m
-    memory: 128Mi
+    cpu: 4
+    memory: 256Mi
 
 nodeSelector: {}
 
