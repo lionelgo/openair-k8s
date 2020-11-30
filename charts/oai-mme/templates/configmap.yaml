@@ -18,7 +18,11 @@ data:
   tac_0_lb: {{ .Values.lte.tac_0_lb | quote }}
   tac_0_hb: {{ .Values.lte.tac_0_hb | quote }}
   tac_1: {{ .Values.lte.tac_1 | quote }}
+  tac_1_lb: {{ .Values.lte.tac_1_lb | quote }}
+  tac_1_hb: {{ .Values.lte.tac_1_hb | quote }}
   tac_2: {{ .Values.lte.tac_2 | quote }}
+  tac_2_lb: {{ .Values.lte.tac_2_lb | quote }}
+  tac_2_hb: {{ .Values.lte.tac_2_hb | quote }}
   nwIfS1c: {{ .Values.lte.nwIfS1c }}
   nwIfS11: {{ .Values.lte.nwIfS11 }}
   nwIfS10: {{ .Values.lte.nwIfS10 }}

@@ -163,6 +163,26 @@ spec:
               configMapKeyRef:
                 name: {{ .Chart.Name }}-configmap
                 key: tac_0_hb
+          - name: TAC_LB_SGW_1
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Chart.Name }}-configmap
+                key: tac_1_lb
+          - name: TAC_HB_SGW_1
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Chart.Name }}-configmap
+                key: tac_1_hb
+          - name: TAC_LB_SGW_2
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Chart.Name }}-configmap
+                key: tac_2_lb
+          - name: TAC_HB_SGW_2
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Chart.Name }}-configmap
+                key: tac_2_hb
           - name: TAC_LB_SGW_TEST_0
             valueFrom:
               configMapKeyRef:
@@ -260,6 +280,6 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       serviceAccountName: {{ .Values.serviceAccount.name }}
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 15
       nodeName: perse.5glab.nsa.eurecom.fr
 
