@@ -55,6 +55,11 @@ service:
   peerDiameterSecPort: 5868
   gtpcPort: 2123
 
+start:
+  mme: true
+  redis: true
+  tcpdump: true
+  
 mmeConf:
   # source file folder
   magma_root: /magma
@@ -65,11 +70,11 @@ mmeConf:
   fdMmeHostname: "magma-oai-mme"
   fdHssHostname: "oai-hss"
   hssDomainName: "oai.svc.cluster.local"
-  useStateless: "false"
+  useStateless: "true"
   logLevel: "TRACE"
   oaiLogLevel: "TRACE"
-  mcc: &mcc "320"
-  mnc: &mnc "230"
+  mcc: &mcc "222"
+  mnc: &mnc "01"
   tac: "1"
   mmeGid: "1"
   mmeCode: "1"
@@ -81,15 +86,15 @@ mmeConf:
   apnCorrectionMapList:
     - imsiPrefix: "00101"
       apnOverride: "magma.ipv4"
-  mmeIpS1c: "192.168.18.155"
+  mmeIpS1c: "192.168.18.164"
   mmeGatewayS1c: "192.168.18.1"
   mmeNetmaskS1c: "24"
-  mmeIpS11: "172.16.1.105"
+  mmeIpS11: "172.16.1.164"
   mmeGatewayS11: "172.16.1.1"
   mmeNetmaskS11: "24"
   s1apIfaceName: "net1"
   s11IfaceName: "net2"
-  remoteSgwIp: "172.16.1.106"
+  remoteSgwIp: "172.16.1.165"
   taiList: |
      ({ MCC="320";MNC="230";TAC="1";},{ MCC="320";MNC="230";TAC="5556";},{ MCC="320";MNC="230";TAC="1235";});
   hssIp: "192.168.18.176"
@@ -100,10 +105,10 @@ resources:
   # environments with little resources, such as Minikube. If you do want to
   # specify resources, uncomment the following lines, adjust them as necessary,
   # and remove the curly braces after 'resources:'
-  limits:
-    cpu: 4
+  # limits:
+  #  cpu: 4
   requests:
-    cpu: 2000m
+    cpu: 200m
     memory: 256Mi
 
 nodeSelector: {}

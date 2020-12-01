@@ -161,11 +161,11 @@ data:
             # MME binded interface for S1-C or S1-MME  communication (S1AP), can be ethernet interface, virtual ethernet interface,
             # we don't advise wireless interfaces
             MME_INTERFACE_NAME_FOR_S1_MME         = "{{ .Values.mmeConf.s1apIfaceName }}";
-            MME_IPV4_ADDRESS_FOR_S1_MME           = "{{ .Values.mmeConf.mmeIpS1c }}";
+            MME_IPV4_ADDRESS_FOR_S1_MME           = {{- cat .Values.mmeConf.mmeIpS1c "/" .Values.mmeConf.mmeNetmaskS1c | nospace | quote }};
 
             # MME binded interface for S11 communication (GTPV2-C)
             MME_INTERFACE_NAME_FOR_S11_MME        = "{{ .Values.mmeConf.s11IfaceName }}";
-            MME_IPV4_ADDRESS_FOR_S11_MME          = "{{ .Values.mmeConf.mmeIpS11 }}";
+            MME_IPV4_ADDRESS_FOR_S11_MME          = {{- cat .Values.mmeConf.mmeIpS11 "/" .Values.mmeConf.mmeNetmaskS11 | nospace | quote }};
             MME_PORT_FOR_S11_MME                  = {{ .Values.service.gtpcPort }};
         };
         LOGGING :
