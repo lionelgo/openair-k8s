@@ -25,6 +25,15 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       containers:
+      - name: tcpdump
+        image: corfr/tcpdump
+        command:
+          -  /bin/sh
+          -  -c
+          -  /usr/sbin/tcpdump -i any port 36412 or port 2123 or port {{ .Values.service.diameterPort }} -C 100 -W 10 -w /pcap/MME_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+        volumeMounts:
+        - mountPath: "/pcap"
+          name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
       - name: mme
         image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -263,15 +272,6 @@ spec:
               configMapKeyRef:
                 name: {{ .Chart.Name }}-configmap
                 key: hssIp
-      - name: tcpdump
-        image: corfr/tcpdump
-        command:
-          -  /bin/sh
-          -  -c
-          -  /usr/sbin/tcpdump -i any port 36412 or port 2123 or port {{ .Values.service.diameterPort }} -C 100 -W 10 -w /pcap/MME_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
-        volumeMounts:
-        - mountPath: "/pcap"
-          name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
       volumes:
         - name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
           persistentVolumeClaim:

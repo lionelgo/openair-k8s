@@ -25,6 +25,16 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       containers:
+      - name: tcpdump
+        image: corfr/tcpdump
+        command:
+          -  /bin/sh
+          -  -c
+          -  /usr/sbin/tcpdump -i any -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+          # -  /usr/sbin/tcpdump -i any port 2152 or port 8805 or port 5001 or arp or icmp -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
+        volumeMounts:
+        - mountPath: "/pcap"
+          name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
       - name: spgwu
         image: "{{ .Values.image.repository }}:{{ .Values.image.version }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -83,19 +93,6 @@ spec:
         resources:
         {{- toYaml . | nindent 10 }}
         {{- end }}
-        command:
-          - /bin/sleep
-          - infinity
-      - name: tcpdump
-        image: corfr/tcpdump
-        command:
-          -  /bin/sh
-          -  -c
-          -  /usr/sbin/tcpdump -i any -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
-          # -  /usr/sbin/tcpdump -i any port 2152 or port 8805 or port 5001 or arp or icmp -C 100 -W 10 -w /pcap/SPGWU_`date +%Y-%m-%d_%H_%M-%S-%Z`.pcap
-        volumeMounts:
-        - mountPath: "/pcap"
-          name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
       volumes:
         - name: {{ .Chart.Name }}-{{ .Values.namespace }}-pv
           persistentVolumeClaim:
