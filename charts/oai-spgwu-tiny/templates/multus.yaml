@@ -39,29 +39,10 @@ spec:
                 }
         ],
         "routes": [
-          { "dst": "192.168.20.0/24" }
+          { "dst": "192.168.20.0/24" },
+          { "dst": "192.168.65.0/24" }
         ],
-        "gateway": "192.168.18.96"        
+        "gateway": "192.168.18.96"
       }
     }'
----
-apiVersion: "k8s.cni.cncf.io/v1"
-kind: NetworkAttachmentDefinition 
-metadata:
-  name: {{ .Chart.Name }}-{{ .Values.namespace }}-net3
-spec:
-  config: '{ 
-      "cniVersion": "0.3.0",
-      "type": "macvlan",
-      "master": "bond0",
-      "mode": "bridge",
-      "ipam": {
-        "type": "static",
-        "addresses": [
-                {
-                        "address": "192.168.3.100/24",
-                        "gateway": "192.168.3.1"
-                }
-        ]
-      }
-    }'
+

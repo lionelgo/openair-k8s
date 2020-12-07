@@ -112,5 +112,5 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       serviceAccountName: {{.Values.serviceAccount.name}}
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 15
       nodeName: perse.5glab.nsa.eurecom.fr

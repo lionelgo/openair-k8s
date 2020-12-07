@@ -11,7 +11,8 @@ image:
   repository: image-registry.openshift-image-registry.svc:5000/oai-cn/oai-spgwu-tiny
   #version: odp
   #version: magma-mme
-  version: all-build-types
+  #version: all-build-types
+  version: mono2multithread
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: Always
 
@@ -32,7 +33,9 @@ serviceAccount:
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
-
+  #sysctls:
+  #  - name: net.ipv4.conf.net2.rp_filter
+  #    value: "0"
 securityContext:
   privileged: true
   capabilities:
@@ -49,6 +52,10 @@ service:
   pfcpPort: 8805
   gtpuPort: 2152
 
+start:
+  spgwu: true
+  tcpdump: true
+  
 lte:
   pidDirectory: "/var/run"
   sgwS1uIf: "net2"
@@ -57,16 +64,25 @@ lte:
   pgwuSgiGw: "192.168.18.1"
   netUeIp: "192.168.20.0/24"
   pgwcSxIp: "192.168.2.164"
-  netUeNatOption: "yes"
+  netUeNatOption: "no"
   sgwIpSx: "192.168.2.165"
   sgwNetmaskSx: "24"
   sgwGatewaySx: "192.168.2.1"
   sgwIpS1u: "192.168.18.165"
   sgwNetmaskS1u: "24"
   sgwGatewayS1u: "192.168.18.1"
-  
+  threadsS1uUl: "16"
+  threadsSgiDl: "16"
+  threadsSx: "1"
+  threadsSgiPrio: "64"
+  threadsS1uPrio: "64"
+  threadsSxPrio: "64"
+  # standart feature is no, put yes if you want less UL packet delay
+  bypassUlPfcpRules: "yes"
+
 persistence:
-  #make it true for the first time when you want to create persistance volume and then false
+  # make it true for the first time when you want to create persistance volume 
+  # and then false
   enabled: false
   
 resources:
@@ -74,10 +90,8 @@ resources:
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  limits:
-    cpu: 4
   requests:
-    cpu: 4
+    cpu: 8
     memory: 256Mi
 
 nodeSelector: {}
