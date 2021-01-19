@@ -4,12 +4,12 @@
 
 replicaCount: 1
 
-namespace: "oai-cn"
+namespace: "oai"
 
 image:
   registry: local
-  repository: image-registry.openshift-image-registry.svc:5000/oai-cn/oai-spgwc
-  version: magma-mme
+  repository: image-registry.openshift-image-registry.svc:5000/oai/oai-spgwc
+  version: lg-csr-collision
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: Always
 
@@ -45,6 +45,10 @@ service:
   pfcpPort: 8805
   gtpcPort: 2123
 
+start:
+  spgwc: true
+  tcpdump: true
+  
 lte:
   pidDirectory: "/var/run"
   sgwS11If: "net2"

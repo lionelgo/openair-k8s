@@ -12,7 +12,7 @@ image:
   #version: odp
   #version: magma-mme
   #version: all-build-types
-  version: mono2multithread
+  version: lg-mono2multithread
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: Always
 
@@ -53,7 +53,7 @@ service:
   gtpuPort: 2152
 
 start:
-  spgwu: true
+  spgwu: false
   tcpdump: true
   
 lte:

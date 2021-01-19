@@ -10,7 +10,7 @@ namespace: "oai-cn"
 image:
   registry: local
   repository: image-registry.openshift-image-registry.svc:5000/oai-cn/magma-mme
-  version: nas-ie-ue-additional-secu
+  version: nsa-support
   # pullPolicy: IfNotPresent or Never or Always
   pullPolicy: Always
 
